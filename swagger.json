@@ -1,0 +1,178 @@
+{
+    "swagger": "2.0",
+    "info": {
+        "version": "1.0.0",
+        "title": "Simple Fetch API",
+        "license": {
+            "name": "MIT"
+        }
+    },
+    "basePath": "/api",
+    "schemes": ["http"],
+    "consumes": ["application/json"],
+    "produces": ["application/json"],
+    "paths": {
+        "/register": {
+            "post": {
+                "summary": "Register users",
+                "operationId": "registerUser",
+                "tags": ["Authentication"],
+                "responses": {
+                    "201": {
+                        "description": "User registered successfully"
+                    },
+                    "default": {
+                        "description": "Error",
+                        "schema": {
+                            "$ref": "#/definitions/Error"
+                        }
+                    }
+                }
+            }
+        },
+        "/login": {
+            "post": {
+                "summary": "Log in users",
+                "operationId": "loginUser",
+                "tags": ["Authentication"],
+                "responses": {
+                    "201": {
+                        "description": "User logged in successfully"
+                    },
+                    "default": {
+                        "description": "Error",
+                        "schema": {
+                            "$ref": "#/definitions/Error"
+                        }
+                    }
+                }
+            }
+        },
+        "/logout": {
+            "post": {
+                "summary": "Log out users",
+                "operationId": "logoutUser",
+                "tags": ["Authentication"],
+                "responses": {
+                    "201": {
+                        "description": "User logged out successfully"
+                    },
+                    "default": {
+                        "description": "Error",
+                        "schema": {
+                            "$ref": "#/definitions/Error"
+                        }
+                    }
+                }
+            }
+        },
+        "/persons": {
+            "get": {
+                "summary": "Fetch list of persons",
+                "operationId": "fetchPersons",
+                "tags": ["Persons"],
+                "responses": {
+                    "200": {
+                        "description": "Persons retrieved successfully'",
+                        "schema": {
+                            "$ref": "#/definitions/Persons"
+                        }
+                    },
+                    "default": {
+                        "description": "Error",
+                        "schema": {
+                            "$ref": "#/definitions/Error"
+                        }
+                    }
+                }
+            }
+        },
+        "/ticket/{id}": {
+            "get": {
+                "summary": "Fetch the ticket purchase history for a given person",
+                "operationId": "fetchTicket",
+                "tags": ["Ticket"],
+                "parameters": [
+                    {
+                        "name": "personID",
+                        "in": "path",
+                        "required": true,
+                        "description": "The id of the person that purchased the ticket",
+                        "type": "integer"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Ticket purchase history retrieved successfully",
+                        "schema": {
+                            "$ref": "#/definitions/Ticket"
+                        }
+                    },
+                    "default": {
+                        "description": "Ticket purchase history not found",
+                        "schema": {
+                            "$ref": "#/definitions/Error"
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "definitions": {
+        "Person": {
+            "properties": {
+                "ID": {
+                    "type": "integer",
+                    "format": "int64"
+                },
+                "full_name": {
+                    "type": "string"
+                },
+                "last_name": {
+                    "type": "string"
+                },
+                "fisrt_name": {
+                    "type": "string"
+                }
+            }
+        },
+        "Persons": {
+            "type": "array",
+            "items": {
+                "$ref": "#/definitions/Person"
+            }
+        },
+        "Ticket": {
+            "properties": {
+                "sporting_event_ticket_id": {
+                    "type": "integer",
+                    "format": "int64"
+                },
+                "purchased_by_id": {
+                    "type": "integer"
+                },
+                "transaction_date_time": {
+                    "type": "string"
+                },
+                "transferred_from_id": {
+                    "type": "integer"
+                },
+                "purchase_price": {
+                    "type": "number"
+                }
+            }
+        },
+        "Error": {
+            "required": ["code", "message"],
+            "properties": {
+                "code": {
+                    "type": "integer",
+                    "format": "int32"
+                },
+                "message": {
+                    "type": "string"
+                }
+            }
+        }
+    }
+}
